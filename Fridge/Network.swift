@@ -19,11 +19,29 @@ enum FoodType {
     case other
 }
 
-struct Food {
+class Food: ObservableObject {
     var name: String
     var type: FoodType
-    var datePurchased: Date
-    var expiryDate: Date?
+    var datePurchased: Date?
+    var daysBeforeExpire: Int?
+    
+    init(name: String, type: FoodType, datePurchased: Date?, daysBeforeExpire: Int?) {
+        self.name = name
+        self.type = type
+        self.datePurchased = datePurchased
+        self.daysBeforeExpire = daysBeforeExpire
+        
+        if daysBeforeExpire == nil {
+            Task {
+                // TODO: Should we have a fall back option if the network is unavailable?
+                self.daysBeforeExpire = try await Network.shared.recommendedExpiryForFood(ofType: type)
+            }
+        }
+    }
+    
+    static let sampleData = [
+        Food(name: "Egg", type: .dairy, datePurchased: nil, daysBeforeExpire: 7)
+    ]
 }
 
 struct Recipe {
@@ -48,8 +66,8 @@ class Network {
         
     }
     
-    func recommendedExpiryForFood(ofType foodType: FoodType) async throws -> Date {
-        return Date()
+    func recommendedExpiryForFood(ofType foodType: FoodType) async throws -> Int {
+        return 0
     }
     
     func favorite(recipe: Recipe, byUserWithID userID: String) async throws {
