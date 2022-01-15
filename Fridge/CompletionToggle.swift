@@ -11,8 +11,8 @@ struct CompletionToggle: View {
     
     @Binding var hasBeenCompleted: Bool
     
-    private let outerDiameter: CGFloat = 30
-    private let innerDiameter: CGFloat = 24
+    private let outerDiameter: CGFloat = 28
+    private let innerDiameter: CGFloat = 22
     
     var body: some View {
         ZStack {
@@ -27,7 +27,7 @@ struct CompletionToggle: View {
         .foregroundColor(.accentColor)
         .onTapGesture {
             hasBeenCompleted.toggle()
-            // TODO: Add vibration
+            // TODO: Add vibration & accessibility support
         }
     }
 }
