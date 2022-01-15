@@ -14,6 +14,7 @@
 		9AE1499B2793667B0016AA50 /* RecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1499A2793667B0016AA50 /* RecipeView.swift */; };
 		9AE1499D279366880016AA50 /* StorageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1499C279366880016AA50 /* StorageView.swift */; };
 		9AE1499F279366930016AA50 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE1499E279366930016AA50 /* CartView.swift */; };
+		9AE149A127937A0A0016AA50 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149A027937A0A0016AA50 /* Network.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		9AE1499A2793667B0016AA50 /* RecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeView.swift; sourceTree = "<group>"; };
 		9AE1499C279366880016AA50 /* StorageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageView.swift; sourceTree = "<group>"; };
 		9AE1499E279366930016AA50 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
+		9AE149A027937A0A0016AA50 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			children = (
 				9AE1498C279363BA0016AA50 /* FridgeApp.swift */,
 				9AE1498E279363BA0016AA50 /* ContentView.swift */,
+				9AE149A027937A0A0016AA50 /* Network.swift */,
 				9AE1499E279366930016AA50 /* CartView.swift */,
 				9AE1499C279366880016AA50 /* StorageView.swift */,
 				9AE1499A2793667B0016AA50 /* RecipeView.swift */,
@@ -148,6 +151,7 @@
 			files = (
 				9AE1499F279366930016AA50 /* CartView.swift in Sources */,
 				9AE1499D279366880016AA50 /* StorageView.swift in Sources */,
+				9AE149A127937A0A0016AA50 /* Network.swift in Sources */,
 				9AE1499B2793667B0016AA50 /* RecipeView.swift in Sources */,
 				9AE1498F279363BA0016AA50 /* ContentView.swift in Sources */,
 				9AE1498D279363BA0016AA50 /* FridgeApp.swift in Sources */,
