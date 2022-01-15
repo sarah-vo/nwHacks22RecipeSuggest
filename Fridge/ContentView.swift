@@ -10,17 +10,17 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            Text("Placeholder")
+            RecipeView()
                 .tabItem {
                     Text("Recipe")
                     Image(systemName: "fork.knife")
                 }
-            Text("Placeholder")
+            StorageView()
                 .tabItem {
                     Text("Storage")
                     Image(systemName: "takeoutbag.and.cup.and.straw")
                 }
-            Text("Placeholder")
+            CartView()
                 .tabItem {
                     Text("Cart")
                     Image(systemName: "cart")
