@@ -25,13 +25,14 @@ class Food: ObservableObject, Identifiable {
     var type: FoodType
     @Published var datePurchased: Date?
     var daysBeforeExpire: Int?
-    var userID = UUID()
+    var userID: UUID
     
     init(name: String, type: FoodType, datePurchased: Date?, daysBeforeExpire: Int?) {
         self.name = name
         self.type = type
         self.datePurchased = datePurchased
         self.daysBeforeExpire = daysBeforeExpire
+        self.userID = Network.shared.userID
         
         if daysBeforeExpire == nil {
             Task {
@@ -92,6 +93,18 @@ class Network {
     
     static let shared = Network()
     
+    private let userIDKey = "hwHacks2022.userID"
+    var userID: UUID {
+        if let userID = UserDefaults.standard.object(forKey: userIDKey) as? UUID {
+            return userID
+        } else {
+            let newUserID = UUID()
+            UserDefaults.standard.set(newUserID, forKey: userIDKey)
+            Task { try await setUserId(newUserID) }
+            return newUserID
+        }
+    }
+    
     let baseURL = URL(string: "http://127.0.0.1:8000")!
     
     func post<T: Encodable, V: Decodable>(pathComponent: String, item: T) async throws -> V {
@@ -134,11 +147,12 @@ class Network {
         return decodedObject
     }
     
-    func itemsInCart(userID: String) async throws -> [Food] {
+    func itemsInCart() async throws -> [Food] {
+        #warning("This method should accepts only items with matching UUID.")
         return try await get(pathComponent: "/recipe_app/shoppinglistitem/")
     }
     
-    func addItemToCart(byUserWithID userID: String, item: Food) async throws {
+    func addItemToCart(item: Food) async throws {
         let _: Food = try await post(pathComponent: "/recipe_app/shoppinglistitem/", item: item)
     }
     
@@ -147,15 +161,15 @@ class Network {
         print(convertedString ?? "Unable to convert data.")
     }
     
-    func addItemsToCart(byUserWithID userID: String, items: [Food]) async throws {
+    func addItemsToCart(items: [Food]) async throws {
         
     }
     
-    func removeItemFromCart(byUserWithID userID: String, item: Food) async throws {
+    func removeItemFromCart(item: Food) async throws {
         
     }
     
-    func removeItemsFromCart(byUserWithID userID: String, item: [Food]) async throws {
+    func removeItemsFromCart(item: [Food]) async throws {
         
     }
     
@@ -163,40 +177,40 @@ class Network {
         return 10
     }
     
-    func favorite(recipe: Recipe, byUserWithID userID: String) async throws {
+    func favorite(recipe: Recipe) async throws {
         
     }
     
-    func unfavorite(recipe: Recipe, byUserWithID userID: String) async throws {
+    func unfavorite(recipe: Recipe) async throws {
         
     }
     
-    func allFavoritedRecipes(byUserWithID userID: String) async throws {
+    func allFavoritedRecipes() async throws {
         
     }
     
-    func itemsInStorage(userID: String) async throws -> [Food] {
+    func itemsInStorage() async throws -> [Food] {
         return Food.sampleData2
     }
     
-    func removeItemFromStorage(_ food: Food, byUserWithID userID: String) async throws {
+    func removeItemFromStorage(_ food: Food) async throws {
         
     }
     
-    func removeItemsFromStorage(_ foods: [Food], byUserWithID userID: String) async throws {
+    func removeItemsFromStorage(_ foods: [Food]) async throws {
         
     }
     
-    func addItemToStorage(_ food: Food, byUserWithID userID: String) async throws {
+    func addItemToStorage(_ food: Food) async throws {
         Food.sampleData2.append(food)
     }
     
-    func addItemsToStorage(_ foods: [Food], byUserWithID userID: String) async throws {
+    func addItemsToStorage(_ foods: [Food]) async throws {
         
     }
     
-    func currentUserID() async throws -> String {
-        return ""
+    private func setUserId(_ id: UUID) async throws {
+        let _: UUID = try await post(pathComponent: "/recipe_app/user/", item: id)
     }
     
     // Function calls to external recipe API is not included yet
