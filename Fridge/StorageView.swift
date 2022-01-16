@@ -11,7 +11,12 @@ struct StorageView: View {
     var body: some View {
         Button("Fire!") {
             Task {
-                await Network.shared.addItemToCart(byUserWithID: "1111111111", item: Food.sampleData1[0])
+                do {
+                    try await Network.shared.addItemToCart(byUserWithID: "1111111111", item: Food.sampleData1[1])
+                } catch {
+                    print(error)
+                    print(error.localizedDescription)
+                }
             }
         }
     }
