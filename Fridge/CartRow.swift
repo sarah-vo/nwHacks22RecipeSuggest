@@ -30,10 +30,12 @@ struct CartRow: View {
         .padding(.vertical)
         .onChange(of: food.datePurchased) { datePurchased in
             // TODO: Create a computed property for the new expiry date
-            if datePurchased != nil {
-                updateAndMoveFromCartToPurchased(item: food)
-            } else {
-                updateAndMoveFromPurchasedToCart(item: food)
+            withAnimation {
+                if datePurchased != nil {
+                    updateAndMoveFromCartToPurchased(item: food)
+                } else {
+                    updateAndMoveFromPurchasedToCart(item: food)
+                }
             }
         }
     }
