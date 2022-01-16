@@ -39,9 +39,8 @@ struct CartRow: View {
     }
     
     func updateAndMoveFromCartToPurchased(item: Food) {
-        foodsPurchased?.append(item)
+        foodsPurchased?.insert(item, at: 0)
         foodsInCart?.removeAll{ $0.id == item.id }
-        item.datePurchased = Date()
         
         Task.detached(priority: .background) {
             try await Network.shared.addItemToStorage(item, byUserWithID: await Network.shared.currentUserID())
@@ -50,9 +49,8 @@ struct CartRow: View {
     }
     
     func updateAndMoveFromPurchasedToCart(item: Food) {
-        foodsInCart?.append(item)
+        foodsInCart?.insert(item, at: 0)
         foodsPurchased?.removeAll{ $0.id == item.id }
-        item.datePurchased = nil
         
         Task.detached(priority: .background) {
             try await Network.shared.addItemToCart(byUserWithID: await Network.shared.currentUserID(), item: item)

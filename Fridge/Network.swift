@@ -78,8 +78,7 @@ class Network {
     }
     
     func removeItemFromCart(byUserWithID userID: String, item: Food) async throws {
-        let removedItem = Food.sampleData1.removeLast()
-        Food.sampleData2.append(removedItem)
+        
     }
     
     func removeItemsFromCart(byUserWithID userID: String, item: [Food]) async throws {
