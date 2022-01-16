@@ -20,7 +20,7 @@ struct ContentView: View {
                     Text("Storage")
                     Image(systemName: "takeoutbag.and.cup.and.straw")
                 }
-            CartView()
+            CartView(foods: Food.sampleData)
                 .tabItem {
                     Text("Cart")
                     Image(systemName: "cart")

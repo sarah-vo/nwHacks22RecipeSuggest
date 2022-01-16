@@ -19,11 +19,12 @@ enum FoodType {
     case other
 }
 
-class Food: ObservableObject {
+class Food: ObservableObject, Identifiable {
     var name: String
     var type: FoodType
     var datePurchased: Date?
     var daysBeforeExpire: Int?
+    let id = UUID()
     
     init(name: String, type: FoodType, datePurchased: Date?, daysBeforeExpire: Int?) {
         self.name = name
@@ -40,7 +41,10 @@ class Food: ObservableObject {
     }
     
     static let sampleData = [
-        Food(name: "Egg", type: .dairy, datePurchased: nil, daysBeforeExpire: 7)
+        Food(name: "Egg", type: .dairy, datePurchased: nil, daysBeforeExpire: 7),
+        Food(name: "Tomato", type: .vegetable, datePurchased: nil, daysBeforeExpire: 10),
+        Food(name: "Stuffed Chicken", type: .frozen, datePurchased: nil, daysBeforeExpire: 30),
+        Food(name: "Tofu", type: .other, datePurchased: nil, daysBeforeExpire: 20)
     ]
 }
 
