@@ -10,10 +10,11 @@ import SwiftUI
 struct AddFoodView: View {
     @State private var foodName = ""
     @State private var foodType: FoodType = .other
-    @State private var expiryDate = Calendar.current.date(byAdding: .day, value: 5, to: .now)!
+    @State private var daysBeforeExpiry = 3
     @State private var recommendDaysBeforeExpiry: Int?
     @Binding var showAddMenu: Bool
     @Binding var cartToAdd: [Food]?
+    @State private var hasErrorInFields = false
     var body: some View {
         NavigationView {
             Form {
@@ -28,16 +29,14 @@ struct AddFoodView: View {
                     Text("Fruit").tag(FoodType.fruit)
                 }
                 VStack(spacing: 4) {
-                    DatePicker("Expiry Date", selection: $expiryDate, displayedComponents: .date)
+                    Stepper("\(daysBeforeExpiry) Days Before Expiry", value: $daysBeforeExpiry)
                     if recommendDaysBeforeExpiry != nil {
                         HStack {
                             Spacer()
                             Text("Recommended: ")
                                 .foregroundColor(.secondary)
-                            Button("\(recommendDaysBeforeExpiry!) days later") {
-                                expiryDate = Calendar.current.date(byAdding: .day,
-                                                                   value: recommendDaysBeforeExpiry!,
-                                                                   to: .now)!
+                            Button("\(recommendDaysBeforeExpiry!) days") {
+                                daysBeforeExpiry = recommendDaysBeforeExpiry!
                                 recommendDaysBeforeExpiry = nil
                             }
                         }
@@ -62,12 +61,25 @@ struct AddFoodView: View {
                     Button("Add", action: validatesAndAddItem)
                 }
             }
+            .alert("Invalid/Empty Fields", isPresented: $hasErrorInFields) {
+                Button("OK", role: .cancel) { hasErrorInFields = false }
+            }
         }
     }
     
     func validatesAndAddItem() {
+        guard !foodName.isEmpty else {
+            hasErrorInFields = true
+            return
+        }
+        
+        let newFood = Food(name: foodName, type: foodType, datePurchased: nil, daysBeforeExpire: daysBeforeExpiry)
+        cartToAdd?.insert(newFood, at: 0)
+        Task.detached(priority: .background) {
+            try await Network.shared.addItemToCart(item: newFood)
+        }
+        
         showAddMenu = false
-        // TODO: validation & addition
     }
 }
 
