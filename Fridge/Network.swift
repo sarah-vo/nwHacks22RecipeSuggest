@@ -122,6 +122,13 @@ class Network {
     }
     
     let baseURL = URL(string: "http://127.0.0.1:8000")!
+    enum PathComponent: String{
+        case recipeEndPoint = "/recipe_app/recipe/"
+        case foodEndPoint = "/recipe_app/food/"
+        case shoppingListItem = "/recipe_app/shoppinglistitem/"
+        case userEndPoint = "/recipe_app/user/"
+    }
+    
     
     func post<T: Encodable, V: Decodable>(pathComponent: String, item: T) async throws -> V {
         let url = baseURL.appendingPathComponent(pathComponent)
@@ -169,7 +176,7 @@ class Network {
     }
     
     func addItemToCart(item: Food) async throws {
-        let _: Food = try await post(pathComponent: "/recipe_app/shoppinglistitem/", item: item)
+        let _: Food = try await post(pathComponent: PathComponent.foodEndPoint.rawValue, item: item)
     }
     
     private func jsonToString(jsonData: Data) -> String {
@@ -178,7 +185,14 @@ class Network {
     }
     
     func addItemsToCart(items: [Food]) async throws {
-        
+        await withThrowingTaskGroup(of: Void.self) { group in
+                    items.forEach { item in
+                        group.addTask { [weak self] in
+                            guard let self = self else { return }
+                            try await self.addItemToCart(item: item)
+                        }
+                    }
+                }
     }
     
     func removeItemFromCart(item: Food) async throws {
@@ -193,20 +207,22 @@ class Network {
         return 10
     }
     
-    func favorite(recipe: Recipe) async throws {
-        
+    func favorite(item: Recipe) async throws {
+        let _: Recipe = try await post(pathComponent: PathComponent.recipeEndPoint.rawValue, item: item)
     }
     
     func unfavorite(recipe: Recipe) async throws {
         
     }
     
-    func allFavoritedRecipes() async throws {
-        
+
+    
+    func allFavoritedRecipes() async throws -> [Recipe] {
+        return try await get(pathComponent: PathComponent.recipeEndPoint.rawValue )
     }
     
     func itemsInStorage() async throws -> [Food] {
-        return Food.sampleData2
+        return try await get(pathComponent: PathComponent.foodEndPoint.rawValue)
     }
     
     func removeItemFromStorage(_ food: Food) async throws {
@@ -217,19 +233,26 @@ class Network {
         
     }
     
-    func addItemToStorage(_ food: Food) async throws {
-        Food.sampleData2.append(food)
+    func addItemToStorage(_ item: Food) async throws {
+        let _: Food = try await post(pathComponent: PathComponent.foodEndPoint.rawValue, item: item)
     }
     
-    func addItemsToStorage(_ foods: [Food]) async throws {
-        
+    func addItemsToStorage(_ items: [Food]) async throws {
+        await withThrowingTaskGroup(of: Void.self) { group in
+                    items.forEach { item in
+                        group.addTask { [weak self] in
+                            guard let self = self else { return }
+                            try await self.addItemToCart(item: item)
+                        }
+                    }
+                }
     }
     
     private struct UUIDWrapper: Codable { let UUID: String }
     private func setUserId(_ uuidString: String) async throws {
         let uuidWrapper = UUIDWrapper(UUID: uuidString)
         print("Posting uuid: \(uuidString)")
-        let returnedResult: UUID = try await post(pathComponent: "/recipe_app/user/", item: uuidWrapper)
+        let returnedResult: UUID = try await post(pathComponent: PathComponent.userEndPoint.rawValue, item: uuidWrapper)
         print("Returned result: \(returnedResult)")
     }
     
