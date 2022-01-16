@@ -10,7 +10,7 @@ import SwiftUI
 
 #warning("The models are here to be used as a reference for the backend. Move them to a separate file when done.")
 
-enum FoodType {
+enum FoodType: Codable {
     case vegetable
     case frozen
     case freshMeat
@@ -20,7 +20,7 @@ enum FoodType {
     case other
 }
 
-class Food: ObservableObject, Identifiable {
+class Food: ObservableObject, Identifiable, Codable {
     var name: String
     var type: FoodType
     @Published var datePurchased: Date?
@@ -55,7 +55,7 @@ class Food: ObservableObject, Identifiable {
     ]
 }
 
-struct Recipe {
+struct Recipe: Codable {
     let id: Int
     let name: String
     let imageURLString: String?
@@ -65,12 +65,21 @@ class Network {
     
     static let shared = Network()
     
+    let baseURL = URL(string: "127.0.0.1:8000/")!
+    
     func itemsInCart(userID: String) async throws -> [Food] {
         return Food.sampleData1
     }
     
     func addItemToCart(byUserWithID userID: String, item: Food) async throws {
-        
+        let url = baseURL.appendingPathComponent("/recipe_app/shoppinglistitem/")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Application/json", forHTTPHeaderField: "Content-Type")
+        let parameterDictionary: [String: Any] = ["food": item]
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameterDictionary, options: []) else { return }
+        request.httpBody = httpBody
+        let (_, _) = try await URLSession.shared.data(for: request)
     }
     
     func addItemsToCart(byUserWithID userID: String, items: [Food]) async throws {

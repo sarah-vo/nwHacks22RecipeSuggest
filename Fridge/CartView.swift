@@ -41,26 +41,28 @@ struct CartView: View {
                             }
                         }
                     }
-                    .navigationTitle("Shopping Cart")
-                    .toolbar {
-                        ToolbarItemGroup(placement: .navigationBarTrailing) {
-                            Toggle(isOn: $showPurchased) {
-                                Image(systemName: "checkmark.seal")
-                            }
-                            
-                            Button {
-                                showAddMenu = true
-                            } label: {
-                                Image(systemName: "plus")
-                            }
-                        }
-                    }
-                    .sheet(isPresented: $showAddMenu) {
-                        AddFoodView(showAddMenu: $showAddMenu)
-                    }
                 } else {
                     ProgressView()
                 }
+            }
+            .navigationTitle("Shopping Cart")
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Toggle(isOn: $showPurchased) {
+                        Image(systemName: "checkmark.seal")
+                    }
+                    
+                    if foodsInCart != nil {
+                        Button {
+                            showAddMenu = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showAddMenu) {
+                AddFoodView(showAddMenu: $showAddMenu, cartToAdd: $foodsInCart)
             }
         }
         .onAppear {

@@ -9,7 +9,11 @@ import SwiftUI
 
 struct StorageView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button("Fire!") {
+            Task {
+                await Network.shared.addItemToCart(byUserWithID: "1111111111", item: Food.sampleData1[0])
+            }
+        }
     }
 }
 
