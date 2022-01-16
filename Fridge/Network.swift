@@ -217,7 +217,7 @@ class Network {
         
     }
     
-    struct UUIDWrapper: Codable { let UUID: String }
+    private struct UUIDWrapper: Codable { let UUID: String }
     private func setUserId(_ uuidString: String) async throws {
         let uuidWrapper = UUIDWrapper(UUID: uuidString)
         print("Posting uuid: \(uuidString)")
