@@ -11,44 +11,30 @@ struct StorageRow: View {
     @ObservedObject var food: Food
     @Environment(\.pixelLength) var pixelLength: CGFloat
     var body: some View {
-        ZStack {
-            Color(uiColor: .systemBackground)
-            VStack {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(food.name)
-                            .font(.headline)
-                        let numberOfDaysLeft = numberOfDaysLeft(from: food.datePurchased!, toDaysLater: food.daysBeforeExpire!)
-                        Text("\(numberOfDaysLeft) Days Before Expiry")
-                            .foregroundColor(daysLeftLabelColor(forFoodPurchasedOn: food.datePurchased!,
-                                                                beforeExpiryIn: food.daysBeforeExpire!))
-                            .font(.caption)
-                        Text("Purchased on \(formattedDate(food.datePurchased))")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Button(action: finishedItem) {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.largeTitle)
-                    }
-                    Button(action: finishedItemAndAddToCart) {
-                        Image(systemName: "cart.circle.fill")
-                            .font(.largeTitle)
-                    }
-                    Image(systemName: "chevron.forward")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                .padding()
-                Color(uiColor: .separator)
-                    .frame(maxWidth: .infinity, maxHeight: pixelLength)
-                    .padding(.leading)
+        HStack {
+            VStack(alignment: .leading) {
+                Text(food.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                let numberOfDaysLeft = numberOfDaysLeft(from: food.datePurchased!, toDaysLater: food.daysBeforeExpire!)
+                Text("\(numberOfDaysLeft) Days Before Expiry")
+                    .foregroundColor(daysLeftLabelColor(forFoodPurchasedOn: food.datePurchased!,
+                                                        beforeExpiryIn: food.daysBeforeExpire!))
+                    .font(.caption)
+                Text("Purchased on \(formattedDate(food.datePurchased))")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
+            Spacer()
+            Image(systemName: "checkmark.circle.fill")
+                .font(.largeTitle)
+                .onTapGesture(perform: finishedItem)
+            Image(systemName: "cart.circle.fill")
+                .font(.largeTitle)
+                .onTapGesture(perform: finishedItemAndAddToCart)
         }
-        .onTapGesture {
-            print("Navigating.")
-        }
+        .foregroundColor(.accentColor)
+        .padding(.vertical)
     }
     
     private func formattedDate(_ date: Date?) -> String {
