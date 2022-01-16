@@ -10,7 +10,7 @@ import SwiftUI
 
 #warning("The models are here to be used as a reference for the backend. Move them to a separate file when done.")
 
-enum FoodType: Codable {
+enum FoodType: String, Codable {
     case vegetable
     case frozen
     case freshMeat
@@ -20,12 +20,12 @@ enum FoodType: Codable {
     case other
 }
 
-class Food: ObservableObject, Identifiable, Codable {
+class Food: ObservableObject, Identifiable {
     var name: String
     var type: FoodType
     @Published var datePurchased: Date?
     var daysBeforeExpire: Int?
-    let id = UUID()
+    var id = UUID()
     
     init(name: String, type: FoodType, datePurchased: Date?, daysBeforeExpire: Int?) {
         self.name = name
@@ -53,6 +53,30 @@ class Food: ObservableObject, Identifiable, Codable {
         Food(name: "Chicken Wings", type: .freshMeat, datePurchased: Date(), daysBeforeExpire: 5),
         Food(name: "Toast", type: .bread, datePurchased: Date(), daysBeforeExpire: 12),
     ]
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        type = try container.decode(FoodType.self, forKey: .type)
+        datePurchased = try container.decode(Date?.self, forKey: .datePurchased)
+        daysBeforeExpire = try container.decode(Int?.self, forKey: .daysBeforeExpire)
+        id = try container.decode(UUID.self, forKey: .id)
+    }
+}
+
+extension Food: Codable {
+    enum CodingKeys: CodingKey {
+        case name, type, datePurchased, daysBeforeExpire, id
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        try container.encode(type, forKey: .type)
+        try container.encode(datePurchased, forKey: .datePurchased)
+        try container.encode(daysBeforeExpire, forKey: .daysBeforeExpire)
+        try container.encode(id, forKey: .id)
+    }
 }
 
 struct Recipe: Codable {
@@ -65,7 +89,7 @@ class Network {
     
     static let shared = Network()
     
-    let baseURL = URL(string: "127.0.0.1:8000/")!
+    let baseURL = URL(string: "http://127.0.0.1:8000")!
     
     func itemsInCart(userID: String) async throws -> [Food] {
         return Food.sampleData1
@@ -75,11 +99,19 @@ class Network {
         let url = baseURL.appendingPathComponent("/recipe_app/shoppinglistitem/")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("Application/json", forHTTPHeaderField: "Content-Type")
-        let parameterDictionary: [String: Any] = ["food": item]
-        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameterDictionary, options: []) else { return }
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let httpBody = try? JSONEncoder().encode(item) else { return }
         request.httpBody = httpBody
-        let (_, _) = try await URLSession.shared.data(for: request)
+        print("Request: \(request)")
+        print("body: \(jsonToString(jsonData: httpBody))")
+        let (data, _) = try await URLSession.shared.data(for: request)
+        guard let food = try? JSONDecoder().decode(Food.self, from: data) else { return }
+        print("Added: \(food)")
+    }
+    
+    func jsonToString(jsonData: Data){
+        let convertedString = String(data: jsonData, encoding: String.Encoding.utf8)
+        print(convertedString ?? "defaultvalue")
     }
     
     func addItemsToCart(byUserWithID userID: String, items: [Food]) async throws {
