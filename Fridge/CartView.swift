@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CartView: View {
     let foods: [Food]
+    @State private var showAddMenu = false
     var body: some View {
         NavigationView {
             List {
@@ -17,6 +18,13 @@ struct CartView: View {
                 }
             }
             .navigationTitle("Shopping Cart")
+            .toolbar {
+                Button {
+                    showAddMenu = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
         }
     }
 }
