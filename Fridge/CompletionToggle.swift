@@ -27,6 +27,17 @@ struct CompletionToggle: View {
         .foregroundColor(.accentColor)
         .onTapGesture {
             food.datePurchased = food.datePurchased == nil ? Date() : nil
+            if food.datePurchased == nil {
+                Task.detached(priority: .background) {
+                    try await Network.shared.addItemToCart(item: food)
+                    try await Network.shared.removeItemFromStorage(food)
+                }
+            } else {
+                Task.detached(priority: .background) {
+                    try await Network.shared.addItemToStorage(food)
+                    try await Network.shared.removeItemFromCart(item: food)
+                }
+            }
             // TODO: Add vibration & accessibility support
         }
     }

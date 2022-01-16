@@ -28,36 +28,6 @@ struct CartRow: View {
             Spacer()
         }
         .padding(.vertical)
-        .onChange(of: food.datePurchased) { datePurchased in
-            // TODO: Create a computed property for the new expiry date
-            withAnimation {
-                if datePurchased != nil {
-                    updateAndMoveFromCartToPurchased(item: food)
-                } else {
-                    updateAndMoveFromPurchasedToCart(item: food)
-                }
-            }
-        }
-    }
-    
-    func updateAndMoveFromCartToPurchased(item: Food) {
-        foodsPurchased?.insert(item, at: 0)
-        foodsInCart?.removeAll{ $0.id == item.id }
-        
-        Task.detached(priority: .background) {
-            try await Network.shared.addItemToStorage(item)
-            try await Network.shared.removeItemFromCart(item: item)
-        }
-    }
-    
-    func updateAndMoveFromPurchasedToCart(item: Food) {
-        foodsInCart?.insert(item, at: 0)
-        foodsPurchased?.removeAll{ $0.id == item.id }
-        
-        Task.detached(priority: .background) {
-            try await Network.shared.addItemToCart(item: item)
-            try await Network.shared.removeItemFromStorage(item)
-        }
     }
 }
 
