@@ -12,10 +12,13 @@ struct StorageView: View {
     var body: some View {
         NavigationView {
             if let foodsPurchased = foodsPurchased {
-                List {
-                    ForEach(foodsPurchased) { food in
-                        Text(food.name)
+                ScrollView {
+                    LazyVStack {
+                        ForEach(foodsPurchased) { food in
+                            StorageRow(food: food)
+                        }
                     }
+                    .navigationTitle("Storage")
                 }
             } else {
                 ProgressView()

@@ -18,6 +18,7 @@
 		9AE149A5279385640016AA50 /* CompletionToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149A4279385640016AA50 /* CompletionToggle.swift */; };
 		9AE149A727938B4A0016AA50 /* CartRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149A627938B4A0016AA50 /* CartRow.swift */; };
 		9AE149A927939C410016AA50 /* AddFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149A827939C410016AA50 /* AddFoodView.swift */; };
+		9AE149AB27944B530016AA50 /* StorageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149AA27944B530016AA50 /* StorageRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		9AE149A4279385640016AA50 /* CompletionToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionToggle.swift; sourceTree = "<group>"; };
 		9AE149A627938B4A0016AA50 /* CartRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartRow.swift; sourceTree = "<group>"; };
 		9AE149A827939C410016AA50 /* AddFoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodView.swift; sourceTree = "<group>"; };
+		9AE149AA27944B530016AA50 /* StorageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				9AE149A627938B4A0016AA50 /* CartRow.swift */,
 				9AE149A4279385640016AA50 /* CompletionToggle.swift */,
 				9AE1499C279366880016AA50 /* StorageView.swift */,
+				9AE149AA27944B530016AA50 /* StorageRow.swift */,
 				9AE1499A2793667B0016AA50 /* RecipeView.swift */,
 				9AE14990279363BB0016AA50 /* Assets.xcassets */,
 				9AE14992279363BB0016AA50 /* Preview Content */,
@@ -160,6 +163,7 @@
 			files = (
 				9AE1499F279366930016AA50 /* CartView.swift in Sources */,
 				9AE1499D279366880016AA50 /* StorageView.swift in Sources */,
+				9AE149AB27944B530016AA50 /* StorageRow.swift in Sources */,
 				9AE149A727938B4A0016AA50 /* CartRow.swift in Sources */,
 				9AE149A127937A0A0016AA50 /* Network.swift in Sources */,
 				9AE1499B2793667B0016AA50 /* RecipeView.swift in Sources */,
