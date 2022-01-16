@@ -9,22 +9,24 @@ import SwiftUI
 
 // TODO: Improve this implementation
 struct RecipeCard: View {
+    let recipe: Recipe
     var body: some View {
         ZStack {
-            Image("recipe-demo")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: UIScreen.main.bounds.width - 40, height: 450)
+            AsyncImage(url: URL(string: recipe.imageURLString ?? "")) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 450)
+            } placeholder: {
+                ProgressView()
+            }
             
             VStack {
                 HStack {
-                    VStack(alignment: .leading) {
-                        Text("Lemon Wrap")
-                            .font(.title)
-                            .bold()
-                        Text("Mexican Food")
-                    }
-                    .foregroundColor(.secondary)
+                    Text(recipe.name)
+                        .font(.title)
+                        .bold()
+                        .foregroundColor(.secondary)
                     Spacer()
                 }
                 .padding()
@@ -41,6 +43,6 @@ struct RecipeCard: View {
 
 struct RecipeCard_Previews: PreviewProvider {
     static var previews: some View {
-        RecipeCard()
+        RecipeCard(recipe: Recipe(id: 0, name: "Sample", imageURLString: "https://developer.apple.com/assets/elements/icons/swiftui/swiftui-96x96_2x.png"))
     }
 }

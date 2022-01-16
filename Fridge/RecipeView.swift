@@ -13,7 +13,9 @@ struct RecipeView: View {
             ScrollView {
                 LazyVStack(spacing: 20) {
                     ForEach(0 ..< 5) { item in
-                        RecipeCard()
+                        RecipeCard(
+                            recipe: Recipe(id: 0, name: "Sample", imageURLString: "https://developer.apple.com/assets/elements/icons/swiftui/swiftui-96x96_2x.png")
+                        )
                     }
                 }
             }
