@@ -29,5 +29,6 @@ class ShoppingListItem(models.Model):
     UUID = models.ForeignKey(User, on_delete=models.CASCADE, default=uuid.uuid4())
     name = models.CharField(max_length=50)
     type = models.CharField(max_length=20)
+    datePurchased = models.DateField(null=True)
     daysBeforeExpire = models.IntegerField()
 
