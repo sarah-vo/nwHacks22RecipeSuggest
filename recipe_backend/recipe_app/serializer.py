@@ -1,4 +1,4 @@
-from .models import Food, Recipe, ShoppingListItem
+from .models import *
 from rest_framework import serializers
 
 class FoodSerializers(serializers.ModelSerializer):
@@ -14,4 +14,9 @@ class ShoppingListItemSerializers(serializers.ModelSerializer):
 class RecipeSerializers(serializers.ModelSerializer):
     class Meta:
         model = Recipe
+        fields = ['id', 'name', 'imageUrl']
+
+class UserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
         fields = ['id', 'name', 'imageUrl']

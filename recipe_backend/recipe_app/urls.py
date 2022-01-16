@@ -6,6 +6,8 @@ router = routers.DefaultRouter()
 router.register(r'food', views.FoodViewSet)
 router.register(r'shoppinglistitem', views.ShoppingListItemViewSet)
 router.register(r'recipe', views.RecipeViewSet)
+router.register(r'user', views.UserViewSet)
+
 
 
 urlpatterns = [
