@@ -186,13 +186,13 @@ class Network {
     
     func addItemsToCart(items: [Food]) async throws {
         await withThrowingTaskGroup(of: Void.self) { group in
-                    items.forEach { item in
-                        group.addTask { [weak self] in
-                            guard let self = self else { return }
-                            try await self.addItemToCart(item: item)
-                        }
-                    }
+            items.forEach { item in
+                group.addTask { [weak self] in
+                    guard let self = self else { return }
+                    try await self.addItemToCart(item: item)
                 }
+            }
+        }
     }
     
     func removeItemFromCart(item: Food) async throws {
