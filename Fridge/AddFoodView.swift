@@ -13,6 +13,7 @@ struct AddFoodView: View {
     @State private var expiryDate = Calendar.current.date(byAdding: .day, value: 5, to: .now)!
     @State private var recommendDaysBeforeExpiry: Int?
     @Binding var showAddMenu: Bool
+    @Binding var cartToAdd: [Food]?
     var body: some View {
         NavigationView {
             Form {
@@ -72,6 +73,6 @@ struct AddFoodView: View {
 
 struct AddFoodView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFoodView(showAddMenu: .constant(true))
+        AddFoodView(showAddMenu: .constant(true), cartToAdd: .constant([]))
     }
 }
