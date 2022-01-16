@@ -25,7 +25,7 @@ class Food: ObservableObject, Identifiable {
     var type: FoodType
     @Published var datePurchased: Date?
     var daysBeforeExpire: Int?
-    var id = UUID()
+    var userID = UUID()
     
     init(name: String, type: FoodType, datePurchased: Date?, daysBeforeExpire: Int?) {
         self.name = name
@@ -60,13 +60,13 @@ class Food: ObservableObject, Identifiable {
         type = try container.decode(FoodType.self, forKey: .type)
         datePurchased = try container.decode(Date?.self, forKey: .datePurchased)
         daysBeforeExpire = try container.decode(Int?.self, forKey: .daysBeforeExpire)
-        id = try container.decode(UUID.self, forKey: .id)
+        userID = try container.decode(UUID.self, forKey: .userID)
     }
 }
 
 extension Food: Codable {
     enum CodingKeys: CodingKey {
-        case name, type, datePurchased, daysBeforeExpire, id
+        case name, type, datePurchased, daysBeforeExpire, userID
     }
     
     func encode(to encoder: Encoder) throws {
@@ -75,7 +75,7 @@ extension Food: Codable {
         try container.encode(type, forKey: .type)
         try container.encode(datePurchased, forKey: .datePurchased)
         try container.encode(daysBeforeExpire, forKey: .daysBeforeExpire)
-        try container.encode(id, forKey: .id)
+        try container.encode(userID, forKey: .userID)
     }
 }
 
