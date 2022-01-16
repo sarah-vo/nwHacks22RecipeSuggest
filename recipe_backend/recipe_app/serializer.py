@@ -9,7 +9,7 @@ class FoodSerializers(serializers.ModelSerializer):
 class ShoppingListItemSerializers(serializers.ModelSerializer):
     class Meta:
         model = ShoppingListItem
-        fields = ['UUID', 'name', 'type', 'daysBeforeExpire' ]
+        fields = ['UUID', 'name', 'type', 'datePurchased', 'daysBeforeExpire' ]
 
 class RecipeSerializers(serializers.ModelSerializer):
     class Meta:
