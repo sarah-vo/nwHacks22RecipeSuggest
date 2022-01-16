@@ -70,14 +70,20 @@ class Food: ObservableObject, Identifiable {
 
 extension Food: Codable {
     enum CodingKeys: CodingKey {
-        case name, type, datePurchased, daysBeforeExpire, UUID
+        #warning("This is temporarily disabled because the backend doesn't have a matching field.")
+        // case name, type, datePurchased, daysBeforeExpire, UUID
+        
+        case name, type, daysBeforeExpire, UUID
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(type, forKey: .type)
-        try container.encode(datePurchased, forKey: .datePurchased)
+        
+        #warning("This is temporarily disabled because the backend doesn't have a matching field.")
+        // try container.encode(datePurchased, forKey: .datePurchased)
+        
         try container.encode(daysBeforeExpire, forKey: .daysBeforeExpire)
         try container.encode(userID, forKey: .UUID)
     }
@@ -95,14 +101,16 @@ class Network {
     
     private let userIDKey = "hwHacks2022.userID"
     var userID: UUID {
-        if let userID = UserDefaults.standard.object(forKey: userIDKey) as? UUID {
-            return userID
+        if let userID = UserDefaults.standard.string(forKey: userIDKey) {
+            return UUID(uuidString: userID)!
         } else {
             let newUserID = UUID()
-            UserDefaults.standard.set(newUserID, forKey: userIDKey)
-            Task { try await setUserId(newUserID) }
+            UserDefaults.standard.set(newUserID.uuidString, forKey: userIDKey)
+            Task { try await setUserId(newUserID.uuidString) }
             return newUserID
         }
+//        UserDefaults.standard.removeObject(forKey: userIDKey)
+//        return UUID()
     }
     
     let baseURL = URL(string: "http://127.0.0.1:8000")!
@@ -156,9 +164,9 @@ class Network {
         let _: Food = try await post(pathComponent: "/recipe_app/shoppinglistitem/", item: item)
     }
     
-    private func jsonToString(jsonData: Data){
+    private func jsonToString(jsonData: Data) -> String {
         let convertedString = String(data: jsonData, encoding: String.Encoding.utf8)
-        print(convertedString ?? "Unable to convert data.")
+        return convertedString ?? "Unable to convert data."
     }
     
     func addItemsToCart(items: [Food]) async throws {
@@ -209,8 +217,12 @@ class Network {
         
     }
     
-    private func setUserId(_ id: UUID) async throws {
-        let _: UUID = try await post(pathComponent: "/recipe_app/user/", item: id)
+    struct UUIDWrapper: Codable { let UUID: String }
+    private func setUserId(_ uuidString: String) async throws {
+        let uuidWrapper = UUIDWrapper(UUID: uuidString)
+        print("Posting uuid: \(uuidString)")
+        let returnedResult: UUID = try await post(pathComponent: "/recipe_app/user/", item: uuidWrapper)
+        print("Returned result: \(returnedResult)")
     }
     
     // Function calls to external recipe API is not included yet
