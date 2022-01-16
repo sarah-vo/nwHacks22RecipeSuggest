@@ -94,10 +94,6 @@ class Network {
     
     let baseURL = URL(string: "http://127.0.0.1:8000")!
     
-    func itemsInCart(userID: String) async throws -> [Food] {
-        return try await get(pathComponent: "/recipe_app/shoppinglistitem/")
-    }
-    
     func post<T: Encodable, V: Decodable>(pathComponent: String, item: T) async throws -> V {
         let url = baseURL.appendingPathComponent(pathComponent)
         var request = URLRequest(url: url)
@@ -136,6 +132,10 @@ class Network {
         let (data, _) = try await URLSession.shared.data(for: request)
         let decodedObject = try JSONDecoder().decode(V.self, from: data)
         return decodedObject
+    }
+    
+    func itemsInCart(userID: String) async throws -> [Food] {
+        return try await get(pathComponent: "/recipe_app/shoppinglistitem/")
     }
     
     func addItemToCart(byUserWithID userID: String, item: Food) async throws {
