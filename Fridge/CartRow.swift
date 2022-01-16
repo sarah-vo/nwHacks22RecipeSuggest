@@ -14,11 +14,19 @@ struct CartRow: View {
     var body: some View {
         HStack {
             CompletionToggle(hasBeenCompleted: $hasBeenPurchased)
-            Text(food.name)
-                .padding(.leading, 7)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(food.name)
+                if let daysBeforeExpire = food.daysBeforeExpire {
+                    let attributedString = try! AttributedString(markdown: "Expires in **\(daysBeforeExpire)** days after purchased.")
+                    Text(attributedString)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(.leading, 7)
             Spacer()
         }
-        .padding()
+        .padding(.vertical)
         .onChange(of: hasBeenPurchased) { hasBeenPurchased in
             food.datePurchased = hasBeenPurchased ? Date() : nil
         }

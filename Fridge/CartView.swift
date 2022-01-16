@@ -8,13 +8,21 @@
 import SwiftUI
 
 struct CartView: View {
+    let foods: [Food]
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            List {
+                ForEach(foods) { food in
+                    CartRow(food: food)
+                }
+            }
+            .navigationTitle("Shopping Cart")
+        }
     }
 }
 
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        CartView()
+        CartView(foods: Food.sampleData)
     }
 }
