@@ -26,7 +26,8 @@ struct CompletionToggle: View {
         }
         .foregroundColor(.accentColor)
         .onTapGesture {
-            food.datePurchased = Date()
+            print("food.datePurchased: \(food.datePurchased)")
+            food.datePurchased = food.datePurchased == nil ? Date() : nil
             // TODO: Add vibration & accessibility support
         }
     }
