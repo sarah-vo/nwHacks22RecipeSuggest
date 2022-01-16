@@ -12,10 +12,9 @@ struct StorageView: View {
         Button("Fire!") {
             Task {
                 do {
-                    try await Network.shared.addItemToCart(item: Food.sampleData1[1])
+                    try await Network.shared.addItemToCart(item: Food.sampleData1[0])
                 } catch {
-                    print(error)
-                    print(error.localizedDescription)
+                    print("Error:", error)
                 }
             }
         }
