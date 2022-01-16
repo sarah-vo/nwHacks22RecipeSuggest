@@ -8,32 +8,41 @@
 import SwiftUI
 
 struct CartView: View {
-    let foods: [Food]
+    @State private var foodsInCart: [Food]? = []
     @State private var showAddMenu = false
     @State private var showPurchased = false
     var body: some View {
         NavigationView {
-            List {
-                ForEach(foods) { food in
-                    CartRow(food: food)
-                }
-            }
-            .navigationTitle("Shopping Cart")
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Toggle(isOn: $showPurchased) {
-                        Image(systemName: "checkmark.seal")
-                    }
-                    
-                    Button {
-                        showAddMenu = true
-                    } label: {
-                        Image(systemName: "plus")
+            if let foodsInCart = foodsInCart {
+                List {
+                    ForEach(foodsInCart) { food in
+                        CartRow(food: food)
                     }
                 }
+                .navigationTitle("Shopping Cart")
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        Toggle(isOn: $showPurchased) {
+                            Image(systemName: "checkmark.seal")
+                        }
+                        
+                        Button {
+                            showAddMenu = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+                .sheet(isPresented: $showAddMenu) {
+                    AddFoodView(showAddMenu: $showAddMenu)
+                }
+            } else {
+                ProgressView()
             }
-            .sheet(isPresented: $showAddMenu) {
-                AddFoodView(showAddMenu: $showAddMenu)
+        }
+        .onAppear {
+            Task.detached(priority: .userInitiated) {
+                foodsInCart = try await Network.shared.itemsInCart(userID: await Network.shared.currentUserID())
             }
         }
     }
@@ -41,6 +50,6 @@ struct CartView: View {
 
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        CartView(foods: Food.sampleData)
+        CartView()
     }
 }

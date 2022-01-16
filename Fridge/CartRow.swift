@@ -35,6 +35,6 @@ struct CartRow: View {
 
 struct CartRow_Previews: PreviewProvider {
     static var previews: some View {
-        CartRow(food: Food.sampleData[0])
+        CartRow(food: Food.sampleData1[0])
     }
 }

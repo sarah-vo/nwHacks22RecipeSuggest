@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 #warning("The models are here to be used as a reference for the backend. Move them to a separate file when done.")
 
@@ -40,11 +41,17 @@ class Food: ObservableObject, Identifiable {
         }
     }
     
-    static let sampleData = [
+    static var sampleData1 = [
         Food(name: "Egg", type: .dairy, datePurchased: nil, daysBeforeExpire: 7),
         Food(name: "Tomato", type: .vegetable, datePurchased: nil, daysBeforeExpire: 10),
         Food(name: "Stuffed Chicken", type: .frozen, datePurchased: nil, daysBeforeExpire: 30),
         Food(name: "Tofu", type: .other, datePurchased: nil, daysBeforeExpire: 20)
+    ]
+    
+    static var sampleData2 = [
+        Food(name: "Redbean Paste", type: .other, datePurchased: nil, daysBeforeExpire: 10),
+        Food(name: "Chicken Wings", type: .freshMeat, datePurchased: nil, daysBeforeExpire: 5),
+        Food(name: "Toast", type: .bread, datePurchased: nil, daysBeforeExpire: 12),
     ]
 }
 
@@ -59,14 +66,23 @@ class Network {
     static let shared = Network()
     
     func itemsInCart(userID: String) async throws -> [Food] {
-        return []
+        return Food.sampleData1
     }
     
-    func addItemToCart(byUserWithID userID: String, item: Food) {
+    func addItemToCart(byUserWithID userID: String, item: Food) async throws {
         
     }
     
-    func addItemsToCart(byUserWithID userID: String, items: [Food]) {
+    func addItemsToCart(byUserWithID userID: String, items: [Food]) async throws {
+        
+    }
+    
+    func removeItemFromCart(byUserWithID userID: String, item: Food) async throws {
+        let removedItem = Food.sampleData1.removeLast()
+        Food.sampleData2.append(removedItem)
+    }
+    
+    func removeItemsFromCart(byUserWithID userID: String, item: [Food]) async throws {
         
     }
     
@@ -87,7 +103,7 @@ class Network {
     }
     
     func itemsInStorage(userID: String) async throws -> [Food] {
-        return []
+        return Food.sampleData2
     }
     
     func removeItemFromStorage(_ food: Food, byUserWithID userID: String) async throws {
@@ -99,7 +115,7 @@ class Network {
     }
     
     func addItemToStorage(_ food: Food, byUserWithID userID: String) async throws {
-        
+        Food.sampleData2.append(food)
     }
     
     func addItemsToStorage(_ foods: [Food], byUserWithID userID: String) async throws {
