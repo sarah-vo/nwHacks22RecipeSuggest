@@ -10,6 +10,7 @@ import SwiftUI
 struct CartView: View {
     let foods: [Food]
     @State private var showAddMenu = false
+    @State private var showPurchased = false
     var body: some View {
         NavigationView {
             List {
@@ -19,10 +20,16 @@ struct CartView: View {
             }
             .navigationTitle("Shopping Cart")
             .toolbar {
-                Button {
-                    showAddMenu = true
-                } label: {
-                    Image(systemName: "plus")
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Toggle(isOn: $showPurchased) {
+                        Image(systemName: "checkmark.seal")
+                    }
+                    
+                    Button {
+                        showAddMenu = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
         }
