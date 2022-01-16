@@ -33,8 +33,7 @@ struct CartView: View {
                                     ProgressView()
                                         .onAppear {
                                             Task.detached(priority: .userInitiated) {
-                                                async let userID = Network.shared.currentUserID()
-                                                foodsPurchased = try await Network.shared.itemsInStorage(userID: userID)
+                                                foodsPurchased = try await Network.shared.itemsInStorage()
                                             }
                                         }
                                 }
@@ -67,7 +66,7 @@ struct CartView: View {
         }
         .onAppear {
             Task.detached(priority: .userInitiated) {
-                foodsInCart = try await Network.shared.itemsInCart(userID: await Network.shared.currentUserID())
+                foodsInCart = try await Network.shared.itemsInCart()
             }
         }
     }

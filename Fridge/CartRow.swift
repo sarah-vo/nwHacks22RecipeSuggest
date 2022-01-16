@@ -45,8 +45,8 @@ struct CartRow: View {
         foodsInCart?.removeAll{ $0.id == item.id }
         
         Task.detached(priority: .background) {
-            try await Network.shared.addItemToStorage(item, byUserWithID: await Network.shared.currentUserID())
-            try await Network.shared.removeItemFromCart(byUserWithID: await Network.shared.currentUserID(), item: item)
+            try await Network.shared.addItemToStorage(item)
+            try await Network.shared.removeItemFromCart(item: item)
         }
     }
     
@@ -55,8 +55,8 @@ struct CartRow: View {
         foodsPurchased?.removeAll{ $0.id == item.id }
         
         Task.detached(priority: .background) {
-            try await Network.shared.addItemToCart(byUserWithID: await Network.shared.currentUserID(), item: item)
-            try await Network.shared.removeItemFromStorage(item, byUserWithID: await Network.shared.currentUserID())
+            try await Network.shared.addItemToCart(item: item)
+            try await Network.shared.removeItemFromStorage(item)
         }
     }
 }
