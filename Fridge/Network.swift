@@ -60,8 +60,15 @@ class Food: ObservableObject, Identifiable {
         name = try container.decode(String.self, forKey: .name)
         type = try container.decode(FoodType.self, forKey: .type)
         
-        #warning("This is temporarily disabled because the backend doesn't have a matching field.")
-        datePurchased = nil // try container.decode(Date?.self, forKey: .datePurchased)
+        let datePurchasedString = try container.decode(String?.self, forKey: .datePurchased)
+        if let datePurchasedString = datePurchasedString {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            datePurchased = dateFormatter.date(from: datePurchasedString)
+        } else {
+            datePurchased = nil
+        }
+        
         
         daysBeforeExpire = try container.decode(Int?.self, forKey: .daysBeforeExpire)
         userID = try container.decode(UUID.self, forKey: .UUID)
@@ -70,10 +77,7 @@ class Food: ObservableObject, Identifiable {
 
 extension Food: Codable {
     enum CodingKeys: CodingKey {
-        #warning("This is temporarily disabled because the backend doesn't have a matching field.")
-        // case name, type, datePurchased, daysBeforeExpire, UUID
-        
-        case name, type, daysBeforeExpire, UUID
+        case name, type, datePurchased, daysBeforeExpire, UUID
     }
     
     func encode(to encoder: Encoder) throws {
@@ -81,8 +85,12 @@ extension Food: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(type, forKey: .type)
         
-        #warning("This is temporarily disabled because the backend doesn't have a matching field.")
-        // try container.encode(datePurchased, forKey: .datePurchased)
+        try container.encode(datePurchased, forKey: .datePurchased)
+        if let datePurchased = datePurchased {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            try container.encode(dateFormatter.string(from: datePurchased), forKey: .datePurchased)
+        }
         
         try container.encode(daysBeforeExpire, forKey: .daysBeforeExpire)
         try container.encode(userID, forKey: .UUID)
