@@ -3,12 +3,17 @@ from django.shortcuts import render
 from rest_framework import viewsets, permissions
 
 from .models import Food, Recipe
-from .serializer import FoodSerializers, RecipeSerializers
+from .serializer import *
 
 # Create your views here.
 class FoodViewSet(viewsets.ModelViewSet):
     queryset = Food.objects.all()
     serializer_class = FoodSerializers
+    permisison_classes = [permissions.IsAuthenticated]
+
+class ShoppingListItemViewSet(viewsets.ModelViewSet):
+    queryset = Food.objects.all()
+    serializer_class = ShoppingListItemSerializers
     permisison_classes = [permissions.IsAuthenticated]
 
 class RecipeViewSet(viewsets.ModelViewSet):

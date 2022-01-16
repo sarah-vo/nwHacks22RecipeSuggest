@@ -10,6 +10,7 @@ class Food(models.Model):
     type = models.CharField(max_length=20)
     datePurchased = models.DateField()
     daysBeforeExpire = models.IntegerField()
+    
 
     def __str_(self):
         return self.name + ", bought" + self.datePurchased

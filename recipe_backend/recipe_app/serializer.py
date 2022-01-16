@@ -6,6 +6,11 @@ class FoodSerializers(serializers.ModelSerializer):
         model = Food
         fields = ['name', 'type', 'datePurchased', 'daysBeforeExpire' ]
 
+class ShoppingListItemSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Food
+        fields = ['name', 'type', 'datePurchased', 'daysBeforeExpire' ]
+
 class RecipeSerializers(serializers.ModelSerializer):
     class Meta:
         model = Recipe
