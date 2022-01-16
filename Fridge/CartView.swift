@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CartView: View {
     @State private var foodsInCart: [Food]? = nil
-    @State private var foodsPurchased: [Food]? = nil
     @State private var showAddMenu = false
     @State private var showPurchased = false
     @Environment(\.colorScheme) var colorScheme: ColorScheme
@@ -19,7 +18,7 @@ struct CartView: View {
             if let foodsInCart = foodsInCart {
                 List {
                     ForEach(foodsInCart) { food in
-                        CartRow(food: food, foodsInCart: $foodsInCart, foodsPurchased: $foodsPurchased)
+                        CartRow(food: food)
                     }
                 }
                 .navigationTitle("Shopping Cart")

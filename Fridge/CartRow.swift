@@ -9,8 +9,6 @@ import SwiftUI
 
 struct CartRow: View {
     @ObservedObject var food: Food
-    @Binding var foodsInCart: [Food]?
-    @Binding var foodsPurchased: [Food]?
     
     var body: some View {
         HStack {
@@ -33,6 +31,6 @@ struct CartRow: View {
 
 struct CartRow_Previews: PreviewProvider {
     static var previews: some View {
-        CartRow(food: Food.sampleData1[0], foodsInCart: .constant(nil), foodsPurchased: .constant(nil))
+        CartRow(food: Food.sampleData1[0])
     }
 }
