@@ -9,14 +9,14 @@ import SwiftUI
 
 struct CompletionToggle: View {
     
-    @Binding var hasBeenCompleted: Bool
+    @ObservedObject var food: Food
     
     private let outerDiameter: CGFloat = 28
     private let innerDiameter: CGFloat = 22
     
     var body: some View {
         ZStack {
-            if hasBeenCompleted {
+            if food.datePurchased != nil {
                 Circle()
                     .frame(width: innerDiameter, height: innerDiameter, alignment: .center)
             }
@@ -26,7 +26,7 @@ struct CompletionToggle: View {
         }
         .foregroundColor(.accentColor)
         .onTapGesture {
-            hasBeenCompleted.toggle()
+            food.datePurchased = Date()
             // TODO: Add vibration & accessibility support
         }
     }
@@ -35,8 +35,8 @@ struct CompletionToggle: View {
 struct CompletionToggle_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            CompletionToggle(hasBeenCompleted: .constant(false))
-            CompletionToggle(hasBeenCompleted: .constant(true))
+            CompletionToggle(food: Food.sampleData2[0])
+            CompletionToggle(food: Food.sampleData2[0])
         }
     }
 }
