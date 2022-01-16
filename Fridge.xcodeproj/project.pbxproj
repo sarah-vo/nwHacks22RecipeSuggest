@@ -19,6 +19,7 @@
 		9AE149A727938B4A0016AA50 /* CartRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149A627938B4A0016AA50 /* CartRow.swift */; };
 		9AE149A927939C410016AA50 /* AddFoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149A827939C410016AA50 /* AddFoodView.swift */; };
 		9AE149AB27944B530016AA50 /* StorageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149AA27944B530016AA50 /* StorageRow.swift */; };
+		9AE149AD279462330016AA50 /* RecipeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE149AC279462330016AA50 /* RecipeCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		9AE149A627938B4A0016AA50 /* CartRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartRow.swift; sourceTree = "<group>"; };
 		9AE149A827939C410016AA50 /* AddFoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodView.swift; sourceTree = "<group>"; };
 		9AE149AA27944B530016AA50 /* StorageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageRow.swift; sourceTree = "<group>"; };
+		9AE149AC279462330016AA50 /* RecipeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				9AE1499C279366880016AA50 /* StorageView.swift */,
 				9AE149AA27944B530016AA50 /* StorageRow.swift */,
 				9AE1499A2793667B0016AA50 /* RecipeView.swift */,
+				9AE149AC279462330016AA50 /* RecipeCard.swift */,
 				9AE14990279363BB0016AA50 /* Assets.xcassets */,
 				9AE14992279363BB0016AA50 /* Preview Content */,
 			);
@@ -170,6 +173,7 @@
 				9AE1498F279363BA0016AA50 /* ContentView.swift in Sources */,
 				9AE1498D279363BA0016AA50 /* FridgeApp.swift in Sources */,
 				9AE149A5279385640016AA50 /* CompletionToggle.swift in Sources */,
+				9AE149AD279462330016AA50 /* RecipeCard.swift in Sources */,
 				9AE149A927939C410016AA50 /* AddFoodView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
