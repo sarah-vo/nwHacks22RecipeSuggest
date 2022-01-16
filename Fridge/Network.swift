@@ -58,15 +58,15 @@ class Food: ObservableObject, Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         type = try container.decode(FoodType.self, forKey: .type)
-        datePurchased = try container.decode(Date?.self, forKey: .datePurchased)
+        datePurchased = nil // try container.decode(Date?.self, forKey: .datePurchased)
         daysBeforeExpire = try container.decode(Int?.self, forKey: .daysBeforeExpire)
-        userID = try container.decode(UUID.self, forKey: .userID)
+        userID = try container.decode(UUID.self, forKey: .UUID)
     }
 }
 
 extension Food: Codable {
     enum CodingKeys: CodingKey {
-        case name, type, datePurchased, daysBeforeExpire, userID
+        case name, type, datePurchased, daysBeforeExpire, UUID
     }
     
     func encode(to encoder: Encoder) throws {
@@ -75,7 +75,7 @@ extension Food: Codable {
         try container.encode(type, forKey: .type)
         try container.encode(datePurchased, forKey: .datePurchased)
         try container.encode(daysBeforeExpire, forKey: .daysBeforeExpire)
-        try container.encode(userID, forKey: .userID)
+        try container.encode(userID, forKey: .UUID)
     }
 }
 
@@ -95,21 +95,22 @@ class Network {
         return Food.sampleData1
     }
     
-    func addItemToCart(byUserWithID userID: String, item: Food) async throws {
-        let url = baseURL.appendingPathComponent("/recipe_app/shoppinglistitem/")
+    func post<T: Encodable, V: Decodable>(pathComponent: String, item: T) async throws -> V {
+        let url = baseURL.appendingPathComponent(pathComponent)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let httpBody = try JSONEncoder().encode(item)
         request.httpBody = httpBody
-        
-        print("Request: \(request)")
-        print("body: \(jsonToString(jsonData: httpBody))")
+        print(jsonToString(jsonData: httpBody))
         
         let (data, _) = try await URLSession.shared.data(for: request)
-        let food = try JSONDecoder().decode(Food.self, from: data)
-        
-        print("Added: \(food)")
+        let decodedObject = try JSONDecoder().decode(V.self, from: data)
+        return decodedObject
+    }
+    
+    func addItemToCart(byUserWithID userID: String, item: Food) async throws {
+        let _: Food = try await post(pathComponent: "/recipe_app/shoppinglistitem/", item: item)
     }
     
     func jsonToString(jsonData: Data){
