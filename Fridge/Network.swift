@@ -58,7 +58,10 @@ class Food: ObservableObject, Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         type = try container.decode(FoodType.self, forKey: .type)
+        
+        #warning("This is temporarily disabled because the backend doesn't have a matching field.")
         datePurchased = nil // try container.decode(Date?.self, forKey: .datePurchased)
+        
         daysBeforeExpire = try container.decode(Int?.self, forKey: .daysBeforeExpire)
         userID = try container.decode(UUID.self, forKey: .UUID)
     }
@@ -92,7 +95,7 @@ class Network {
     let baseURL = URL(string: "http://127.0.0.1:8000")!
     
     func itemsInCart(userID: String) async throws -> [Food] {
-        return Food.sampleData1
+        return try await get(pathComponent: "/recipe_app/shoppinglistitem/")
     }
     
     func post<T: Encodable, V: Decodable>(pathComponent: String, item: T) async throws -> V {
@@ -109,13 +112,39 @@ class Network {
         return decodedObject
     }
     
+    func get<Q: Encodable, V: Decodable>(pathComponent: String, query: Q) async throws -> V {
+        let url = baseURL.appendingPathComponent(pathComponent)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let httpBody = try JSONEncoder().encode(query)
+        request.httpBody = httpBody
+        print(jsonToString(jsonData: httpBody))
+        
+        let (data, _) = try await URLSession.shared.data(for: request)
+        let decodedObject = try JSONDecoder().decode(V.self, from: data)
+        return decodedObject
+    }
+    
+    func get<V: Decodable>(pathComponent: String) async throws -> V {
+        let url = baseURL.appendingPathComponent(pathComponent)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let (data, _) = try await URLSession.shared.data(for: request)
+        let decodedObject = try JSONDecoder().decode(V.self, from: data)
+        return decodedObject
+    }
+    
     func addItemToCart(byUserWithID userID: String, item: Food) async throws {
         let _: Food = try await post(pathComponent: "/recipe_app/shoppinglistitem/", item: item)
     }
     
-    func jsonToString(jsonData: Data){
+    private func jsonToString(jsonData: Data){
         let convertedString = String(data: jsonData, encoding: String.Encoding.utf8)
-        print(convertedString ?? "defaultvalue")
+        print(convertedString ?? "Unable to convert data.")
     }
     
     func addItemsToCart(byUserWithID userID: String, items: [Food]) async throws {
