@@ -32,6 +32,9 @@ struct CartView: View {
                     }
                 }
             }
+            .sheet(isPresented: $showAddMenu) {
+                AddFoodView(showAddMenu: $showAddMenu)
+            }
         }
     }
 }

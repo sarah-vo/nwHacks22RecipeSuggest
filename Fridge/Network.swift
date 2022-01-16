@@ -71,7 +71,7 @@ class Network {
     }
     
     func recommendedExpiryForFood(ofType foodType: FoodType) async throws -> Int {
-        return 0
+        return 10
     }
     
     func favorite(recipe: Recipe, byUserWithID userID: String) async throws {
