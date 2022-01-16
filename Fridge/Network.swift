@@ -100,12 +100,15 @@ class Network {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        guard let httpBody = try? JSONEncoder().encode(item) else { return }
+        let httpBody = try JSONEncoder().encode(item)
         request.httpBody = httpBody
+        
         print("Request: \(request)")
         print("body: \(jsonToString(jsonData: httpBody))")
+        
         let (data, _) = try await URLSession.shared.data(for: request)
-        guard let food = try? JSONDecoder().decode(Food.self, from: data) else { return }
+        let food = try JSONDecoder().decode(Food.self, from: data)
+        
         print("Added: \(food)")
     }
     
