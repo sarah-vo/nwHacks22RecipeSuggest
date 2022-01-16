@@ -23,7 +23,7 @@ enum FoodType {
 class Food: ObservableObject, Identifiable {
     var name: String
     var type: FoodType
-    var datePurchased: Date?
+    @Published var datePurchased: Date?
     var daysBeforeExpire: Int?
     let id = UUID()
     
@@ -49,9 +49,9 @@ class Food: ObservableObject, Identifiable {
     ]
     
     static var sampleData2 = [
-        Food(name: "Redbean Paste", type: .other, datePurchased: nil, daysBeforeExpire: 10),
-        Food(name: "Chicken Wings", type: .freshMeat, datePurchased: nil, daysBeforeExpire: 5),
-        Food(name: "Toast", type: .bread, datePurchased: nil, daysBeforeExpire: 12),
+        Food(name: "Redbean Paste", type: .other, datePurchased: Date(), daysBeforeExpire: 10),
+        Food(name: "Chicken Wings", type: .freshMeat, datePurchased: Date(), daysBeforeExpire: 5),
+        Food(name: "Toast", type: .bread, datePurchased: Date(), daysBeforeExpire: 12),
     ]
 }
 
