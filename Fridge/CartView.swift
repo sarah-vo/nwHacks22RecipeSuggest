@@ -16,9 +16,18 @@ struct CartView: View {
     var body: some View {
         NavigationView {
             if let foodsInCart = foodsInCart {
-                List {
-                    ForEach(foodsInCart) { food in
-                        CartRow(food: food)
+                Group {
+                    if !foodsInCart.isEmpty {
+                        List {
+                            ForEach(foodsInCart) { food in
+                                CartRow(food: food)
+                            }
+                        }
+                    } else {
+                        Text("No items in cart. Tap \"+\" to add one.")
+                            .foregroundColor(.secondary)
+                            .font(.title)
+                            .multilineTextAlignment(.center)
                     }
                 }
                 .navigationTitle("Shopping Cart")
@@ -30,22 +39,25 @@ struct CartView: View {
                             Image(systemName: "plus")
                         }
                     }
+                    
                     ToolbarItem(placement: .bottomBar) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.ultraThinMaterial)
-                                .blendMode(colorScheme == .dark ? .normal : .overlay)
-                            HStack {
-                                Text("Done shopping?")
-                                Spacer()
-                                Button("Remove Purchased") {
-                                    // TODO:
+                        if foodsInCart.contains(where: { $0.datePurchased != nil }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.ultraThinMaterial)
+                                    .blendMode(colorScheme == .dark ? .normal : .overlay)
+                                HStack {
+                                    Text("Done shopping?")
+                                    Spacer()
+                                    Button("Remove Purchased") {
+                                        // TODO:
+                                    }
+                                    .buttonStyle(.bordered)
                                 }
-                                .buttonStyle(.bordered)
+                                .padding()
                             }
-                            .padding()
+                            .offset(x: 0.0, y: -30.0)
                         }
-                        .offset(x: 0.0, y: -30.0)
                     }
                 }
                 .sheet(isPresented: $showAddMenu) {
